@@ -1,0 +1,2008 @@
+{
+  "schema_version": "cellsight-catalog-snapshot-1.0",
+  "catalog_kind": "knowledge_index_not_live_registry",
+  "baseline_top_level_skills": 73,
+  "execution_skills": 71,
+  "control_skills": 2,
+  "category_count": 12,
+  "source_versions": {
+    "execution": "0.2.1",
+    "control_distribution": "0.5.1",
+    "control_runtime": "0.5.1_meta_plus_0.4.0_legacy"
+  },
+  "internal_evaluator_ids_not_additional_top_level_skills": [
+    "cellsight-eval-basic",
+    "cellsight-eval-detection-consistency",
+    "cellsight-eval-llm-rubric",
+    "cellsight-eval-integrity",
+    "cellsight-eval-classification",
+    "cellsight-eval-count-consistency",
+    "cellsight-eval-ratio",
+    "cellsight-eval-reporting-rubric"
+  ],
+  "extension_policy": "Append verified Execution/Evaluation manifests; baseline is not a closed allowlist.",
+  "entries": [
+    {
+      "skill_id": "cellsight-planner",
+      "kind": "control",
+      "role": "planner",
+      "distribution_version": "0.5.1",
+      "runtime_version": "0.5.1_meta_plus_0.4.0_legacy",
+      "availability": "unknown_until_host_verified",
+      "tasks": [
+        "intent",
+        "routing",
+        "planning",
+        "bounded_replanning"
+      ]
+    },
+    {
+      "skill_id": "cellsight-evaluation",
+      "kind": "control",
+      "role": "evaluation",
+      "distribution_version": "0.5.1",
+      "runtime_version": "0.5.1_meta_plus_0.4.0_legacy",
+      "availability": "unknown_until_host_verified",
+      "tasks": [
+        "specification",
+        "reuse",
+        "compose",
+        "generate",
+        "validate",
+        "evaluation",
+        "reporting"
+      ]
+    },
+    {
+      "skill_id": "cellsight-detection-yolo",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "YOLO11 / YOLO26",
+      "implementation_id": "yolo",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "ultralytics"
+      ],
+      "notes": "YOLO各版本和规模由checkpoint确定；YOLO26端到端模式与YOLO11后处理有差别。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-detection-rtdetr",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "RT-DETR",
+      "implementation_id": "rtdetr",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "ultralytics"
+      ],
+      "notes": "原生查询式检测；密集对象要检查查询上限，不套用YOLO11的NMS参数。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-detection-fasterrcnn",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "Faster R-CNN",
+      "implementation_id": "fasterrcnn",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "RPN与最终框NMS分别配置；明确前景从1开始，0为背景。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-detection-retinanet",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "RetinaNet",
+      "implementation_id": "retinanet",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "Focal Loss不保证解决目标类别不平衡；分类头初始化按版本确认。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-detection-fcos",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "FCOS",
+      "implementation_id": "fcos",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "分数结合分类与centerness；固定尺度和后处理。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-detection-ssdlite",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "SSDLite320",
+      "implementation_id": "ssdlite",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "固定320输入的轻量基线；微小目标细节可能丢失。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-detection-rf-detr",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "RF-DETR",
+      "implementation_id": "rf-detr",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch"
+      ],
+      "notes": "使用各自框架；不能以YOLO权重名替换。检查输入限制、类别映射和查询上限。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-detection-deimv2",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "DEIMv2",
+      "implementation_id": "deimv2",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch"
+      ],
+      "notes": "使用各自框架；不能以YOLO权重名替换。检查输入限制、类别映射和查询上限。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-detection-d-fine",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "D-FINE",
+      "implementation_id": "d-fine",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch"
+      ],
+      "notes": "使用各自框架；不能以YOLO权重名替换。检查输入限制、类别映射和查询上限。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-detection-grounding-dino",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "Grounding DINO",
+      "implementation_id": "grounding-dino",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "transformers"
+      ],
+      "notes": "文字提示开放词汇框；输出是ai_pending，专业术语需复核。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-detection-threshold-boxes",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "detection",
+      "title": "阈值连通域框基线",
+      "implementation_id": "threshold-boxes",
+      "tasks": [
+        "detect"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": "传统算法；适合高对比不接触对象，不能称为YOLO或学习式检测。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-threshold-cc",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "Otsu＋连通域",
+      "implementation_id": "threshold-cc",
+      "tasks": [
+        "instance_segment"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": "轻量无权重基线；粘连对象不会自动分开。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-watershed",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "距离变换＋分水岭",
+      "implementation_id": "watershed",
+      "tasks": [
+        "instance_segment"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "skimage"
+      ],
+      "notes": "依赖前景和种子；min_distance决定分裂/合并。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-cellpose-sam",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "Cellpose-SAM",
+      "implementation_id": "cellpose-sam",
+      "tasks": [
+        "instance_segment"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "cellpose"
+      ],
+      "notes": "本地权重对应cpsam_v2；当前内置adapter仅2D单通道，不自动判断完整/损伤。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-cellpose-dino",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "CellposeDINO",
+      "implementation_id": "cellpose-dino",
+      "tasks": [
+        "instance_segment"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "cellpose"
+      ],
+      "notes": "本地权重对应cpdino-vitb；当前内置adapter仅2D单通道，不自动判断完整/损伤。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-stardist",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "StarDist2D / StarDist3D",
+      "implementation_id": "stardist",
+      "tasks": [
+        "instance_segment"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "stardist",
+        "csbdeep"
+      ],
+      "notes": "星凸形状先验适合部分细胞核；不保证适合强凹陷或细长对象。内置adapter仅单通道StarDist2D。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-sam",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "SAM",
+      "implementation_id": "sam",
+      "tasks": [
+        "prompt_segment"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch"
+      ],
+      "notes": "原版SAM使用点/框等视觉提示；无文字理解能力。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-sam2",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "SAM 2",
+      "implementation_id": "sam2",
+      "tasks": [
+        "prompt_segment"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch"
+      ],
+      "notes": "图像/视频提示式分割；视频身份传播不代表细胞分裂谱系分析。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-sam3",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "SAM 3",
+      "implementation_id": "sam3",
+      "tasks": [
+        "prompt_segment"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch"
+      ],
+      "notes": "文字概念或视觉提示；本包只接辅助推理工作流，官方微调是另外模式。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-yolo-seg",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "YOLO实例分割",
+      "implementation_id": "yolo-seg",
+      "tasks": [
+        "instance_segment"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "ultralytics"
+      ],
+      "notes": "必须使用-seg权重和实例标注；重叠掩膜以独立mask stack保留。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-maskrcnn",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "Mask R-CNN",
+      "implementation_id": "maskrcnn",
+      "tasks": [
+        "instance_segment"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "需真实实例掩膜；COCO类标签与背景索引明确转换。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-unet",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "U-Net / U-Net++ / DeepLabV3+",
+      "implementation_id": "unet",
+      "tasks": [
+        "semantic_segment"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "segmentation_models_pytorch"
+      ],
+      "notes": "语义分割；不直接提供独立实例，连通域/分水岭需另立步骤。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-nnunet",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "nnU-Net v2",
+      "implementation_id": "nnunet",
+      "tasks": [
+        "semantic_segment"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "nnunetv2"
+      ],
+      "notes": "2D/3D自配置生物医学分割框架，数据准备和交叉验证耗时需计入预算。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-segmentation-segformer",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "segmentation",
+      "title": "SegFormer / Mask2Former",
+      "implementation_id": "segformer",
+      "tasks": [
+        "semantic_segment"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "transformers"
+      ],
+      "notes": "SegFormer语义分割；Mask2Former可支持多种分割模式，需专用后处理。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-classification-resnet",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "classification",
+      "title": "ResNet",
+      "implementation_id": "resnet",
+      "tasks": [
+        "classify"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "经典可解释的迁移学习基线；不承诺小样本一定更优。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-classification-efficientnet",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "classification",
+      "title": "EfficientNet / EfficientNetV2",
+      "implementation_id": "efficientnet",
+      "tasks": [
+        "classify"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "注意训练时输入分辨率与归一化；比较有效计算成本。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-classification-mobilenet",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "classification",
+      "title": "MobileNetV3",
+      "implementation_id": "mobilenet",
+      "tasks": [
+        "classify"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "低算力候选；训练集上仍需检查细粒度分类能力。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-classification-convnext",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "classification",
+      "title": "ConvNeXt",
+      "implementation_id": "convnext",
+      "tasks": [
+        "classify"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "现代卷积骨干；固定checkpoint对应的预处理。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-classification-vit",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "classification",
+      "title": "Vision Transformer",
+      "implementation_id": "vit",
+      "tasks": [
+        "classify"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "输入patch与尺寸约束；不能自动推定小数据更好。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-classification-swin",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "classification",
+      "title": "Swin Transformer",
+      "implementation_id": "swin",
+      "tasks": [
+        "classify"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "torch",
+        "torchvision"
+      ],
+      "notes": "分层Transformer；固定窗口与图像预处理。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-classification-dinov3-linear",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "classification",
+      "title": "DINOv3＋线性分类头",
+      "implementation_id": "dinov3-linear",
+      "tasks": [
+        "classify"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "transformers"
+      ],
+      "notes": "冻结特征＋训练头与端到端微调是不同实验；预训练骨干不自动输出科研类别。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-tracking-iou-tracker",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "tracking",
+      "title": "逐帧IoU关联基线",
+      "implementation_id": "iou-tracker",
+      "tasks": [
+        "track"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [],
+      "notes": "本项目简单贪心IoU基线，不是ByteTrack；不补遮挡，不处理分裂。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-tracking-bytetrack",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "tracking",
+      "title": "ByteTrack",
+      "implementation_id": "bytetrack",
+      "tasks": [
+        "track"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": false,
+      "dependencies": [],
+      "notes": "将低分检测用于关联；输出依赖检测质量。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-tracking-deepsort",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "tracking",
+      "title": "DeepSORT",
+      "implementation_id": "deepsort",
+      "tasks": [
+        "track"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [],
+      "notes": "外观特征常来自行人域，细胞图像不能直接假设适用。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-tracking-trackmate",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "tracking",
+      "title": "TrackMate",
+      "implementation_id": "trackmate",
+      "tasks": [
+        "track"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": false,
+      "dependencies": [],
+      "notes": "科研追踪工具；分裂、合并、gap-closing取决于实际选定tracker设置。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-processing-identity",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "processing",
+      "title": "保留原值副本",
+      "implementation_id": "identity",
+      "tasks": [
+        "process"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": "必须输出处理历史；除保值裁剪与经验证校正外，默认model_input_only。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-processing-percentile-normalize",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "processing",
+      "title": "百分位归一化",
+      "implementation_id": "percentile-normalize",
+      "tasks": [
+        "process"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": "必须输出处理历史；除保值裁剪与经验证校正外，默认model_input_only。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-processing-gaussian",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "processing",
+      "title": "Gaussian滤波",
+      "implementation_id": "gaussian",
+      "tasks": [
+        "process"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "cv2"
+      ],
+      "notes": "必须输出处理历史；除保值裁剪与经验证校正外，默认model_input_only。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-processing-median-filter",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "processing",
+      "title": "中值滤波",
+      "implementation_id": "median-filter",
+      "tasks": [
+        "process"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "cv2"
+      ],
+      "notes": "必须输出处理历史；除保值裁剪与经验证校正外，默认model_input_only。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-processing-clahe",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "processing",
+      "title": "CLAHE局部对比度增强",
+      "implementation_id": "clahe",
+      "tasks": [
+        "process"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "cv2"
+      ],
+      "notes": "必须输出处理历史；除保值裁剪与经验证校正外，默认model_input_only。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-processing-morph-opening",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "processing",
+      "title": "形态学开运算",
+      "implementation_id": "morph-opening",
+      "tasks": [
+        "process"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "cv2"
+      ],
+      "notes": "必须输出处理历史；除保值裁剪与经验证校正外，默认model_input_only。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-processing-morph-closing",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "processing",
+      "title": "形态学闭运算",
+      "implementation_id": "morph-closing",
+      "tasks": [
+        "process"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "cv2"
+      ],
+      "notes": "必须输出处理历史；除保值裁剪与经验证校正外，默认model_input_only。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-processing-crop",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "processing",
+      "title": "ROI裁剪",
+      "implementation_id": "crop",
+      "tasks": [
+        "process"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": "必须输出处理历史；除保值裁剪与经验证校正外，默认model_input_only。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-processing-flatfield",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "processing",
+      "title": "平场/暗偏置校正",
+      "implementation_id": "flatfield",
+      "tasks": [
+        "process"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": "必须输出处理历史；除保值裁剪与经验证校正外，默认model_input_only。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-processing-registration",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "processing",
+      "title": "图像配准",
+      "implementation_id": "registration",
+      "tasks": [
+        "register"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "skimage"
+      ],
+      "notes": "跨通道/时序配准必须保留变换；掩膜用最近邻重采样。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-restoration-median-denoise",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "restoration",
+      "title": "中值去噪基线",
+      "implementation_id": "median-denoise",
+      "tasks": [
+        "restore"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "cv2"
+      ],
+      "notes": "仅作为去噪与产物流程基线；未验证强度保真。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-restoration-nlmeans",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "restoration",
+      "title": "Non-local Means",
+      "implementation_id": "nlmeans",
+      "tasks": [
+        "restore"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "skimage"
+      ],
+      "notes": "需估计噪声尺度；平滑可能影响细节。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-restoration-richardson-lucy",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "restoration",
+      "title": "Richardson–Lucy去卷积",
+      "implementation_id": "richardson-lucy",
+      "tasks": [
+        "restore"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "skimage"
+      ],
+      "notes": "需要正确PSF和迭代数；不能默认恢复图可直接定量。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-restoration-care",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "restoration",
+      "title": "CARE",
+      "implementation_id": "care",
+      "tasks": [
+        "restore"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "csbdeep"
+      ],
+      "notes": "监督复原需配对低/高质量训练样本，检查配准与域差异。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-restoration-noise2void",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "restoration",
+      "title": "Noise2Void",
+      "implementation_id": "noise2void",
+      "tasks": [
+        "restore"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "n2v"
+      ],
+      "notes": "自监督依赖噪声假设；结构相关噪声和域迁移需验证。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-restoration-restormer",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "restoration",
+      "title": "Restormer",
+      "implementation_id": "restormer",
+      "tasks": [
+        "restore"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch"
+      ],
+      "notes": "不同复原任务需要匹配模型与checkpoint，不保证迁移显微图像。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-vision-language-clip",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "vision-language",
+      "title": "CLIP",
+      "implementation_id": "clip",
+      "tasks": [
+        "image_text_match",
+        "embedding"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "clip"
+      ],
+      "notes": "图文相似度受prompt与候选集合影响，不能当专业类别正确概率。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-vision-language-biomedclip",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "vision-language",
+      "title": "BioMedCLIP",
+      "implementation_id": "biomedclip",
+      "tasks": [
+        "image_text_match",
+        "embedding"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "open_clip"
+      ],
+      "notes": "生物医学图文预训练不保证目标显微任务有效。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-vision-language-siglip",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "vision-language",
+      "title": "SigLIP / SigLIP2",
+      "implementation_id": "siglip",
+      "tasks": [
+        "image_text_match",
+        "embedding"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "transformers"
+      ],
+      "notes": "Sigmoid式图文训练的分数不应套用CLIP softmax假设。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-vision-language-dinov3",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "vision-language",
+      "title": "DINOv3视觉特征",
+      "implementation_id": "dinov3",
+      "tasks": [
+        "embedding"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "transformers"
+      ],
+      "notes": "视觉骨干输出特征；不自动提供类别、框或语言理解。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-vision-language-vlm",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "vision-language",
+      "title": "视觉语言模型（Qwen-VL等）",
+      "implementation_id": "vlm",
+      "tasks": [
+        "describe"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "transformers"
+      ],
+      "notes": "生成式解释不等于检测、计数或精确测量。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-quantification-morphology",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "quantification",
+      "title": "实例数量、面积、质心与边界框",
+      "implementation_id": "morphology",
+      "tasks": [
+        "morphology"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": "2D实例掩膜；面积按[sy,sx]换算，未校准时仅px。复杂形态另用regionprops。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-quantification-fluorescence",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "quantification",
+      "title": "荧光强度与背景校正",
+      "implementation_id": "fluorescence",
+      "tasks": [
+        "fluorescence"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": "原图/验证校正强度＋对应实例掩膜；显式背景方法与饱和检查，不对增强图测强度。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-quantification-regionprops",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "quantification",
+      "title": "形状与纹理扩展测量",
+      "implementation_id": "regionprops",
+      "tasks": [
+        "morphology"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "skimage"
+      ],
+      "notes": "偏心率、轴长、周长等需明确2D/3D与物理像素间距；不能混用不同周长估计器。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-quantification-spatial-statistics",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "quantification",
+      "title": "空间分布与共定位统计",
+      "implementation_id": "spatial-statistics",
+      "tasks": [
+        "spatial_statistics"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": false,
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "skimage"
+      ],
+      "notes": "最近邻、共定位与组间统计需要明确ROI、边界效应、通道配准和独立样品。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-anomaly-patchcore",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "anomaly",
+      "title": "PatchCore",
+      "implementation_id": "patchcore",
+      "tasks": [
+        "anomaly_detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "anomalib"
+      ],
+      "notes": "正常参考patch特征的覆盖与污染影响结果。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-anomaly-padim",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "anomaly",
+      "title": "PaDiM",
+      "implementation_id": "padim",
+      "tasks": [
+        "anomaly_detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "anomalib"
+      ],
+      "notes": "参考特征分布和协方差估计依赖域及样本。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-anomaly-efficientad",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "anomaly",
+      "title": "EfficientAD",
+      "implementation_id": "efficientad",
+      "tasks": [
+        "anomaly_detect"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "anomalib"
+      ],
+      "notes": "训练/校准划分与teacher/student配置固定。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-pose-yolo-pose",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "pose",
+      "title": "YOLO Pose",
+      "implementation_id": "yolo-pose",
+      "tasks": [
+        "pose"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [
+        "predict"
+      ],
+      "adapter_present": true,
+      "requires_weights": true,
+      "dependencies": [
+        "numpy",
+        "PIL",
+        "ultralytics"
+      ],
+      "notes": "使用-pose权重；默认人体骨架不适用于任意科研对象。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-pose-mmpose",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "pose",
+      "title": "MMPose / RTMPose / HRNet",
+      "implementation_id": "mmpose",
+      "tasks": [
+        "pose"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "mmpose"
+      ],
+      "notes": "框架支持多种骨架，top-down依赖检测框；不静默套用人体标签。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-pose-deeplabcut",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "pose",
+      "title": "DeepLabCut",
+      "implementation_id": "deeplabcut",
+      "tasks": [
+        "pose"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "deeplabcut"
+      ],
+      "notes": "科研动物关键点流程；关键点定义与训练数据是主要前置条件。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-ocr-paddleocr",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "ocr",
+      "title": "PaddleOCR / PP-OCR",
+      "implementation_id": "paddleocr",
+      "tasks": [
+        "ocr"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "paddleocr"
+      ],
+      "notes": "新旧版本API与输出不同；保留文字检测框和识别置信度。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-ocr-tesseract",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "ocr",
+      "title": "Tesseract OCR",
+      "implementation_id": "tesseract",
+      "tasks": [
+        "ocr"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "pytesseract"
+      ],
+      "notes": "Python包装之外还需要本地tesseract程序及语言包。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-ocr-easyocr",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "ocr",
+      "title": "EasyOCR",
+      "implementation_id": "easyocr",
+      "tasks": [
+        "ocr"
+      ],
+      "documented_modes": [
+        "predict"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "easyocr"
+      ],
+      "notes": "语言列表与字符集影响结果；使用本地模型并关闭下载。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-depth-depth-anything-v2",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "depth",
+      "title": "Depth Anything V2",
+      "implementation_id": "depth-anything-v2",
+      "tasks": [
+        "depth"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "transformers"
+      ],
+      "notes": "相对深度与度量模型区分；不能据此获得显微真实高度。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    },
+    {
+      "skill_id": "cellsight-depth-midas",
+      "kind": "execution",
+      "version": "0.2.1",
+      "category": "depth",
+      "title": "MiDaS / DPT",
+      "implementation_id": "midas",
+      "tasks": [
+        "depth"
+      ],
+      "documented_modes": [
+        "predict",
+        "train"
+      ],
+      "builtin_adapter_modes": [],
+      "adapter_present": false,
+      "requires_weights": true,
+      "dependencies": [
+        "torch",
+        "transformers"
+      ],
+      "notes": "相对深度图的尺度/方向依模型定义，不标成米或微米。",
+      "availability": "unknown_until_host_verified",
+      "scientific_validation": "not_established"
+    }
+  ],
+  "categories": [
+    {
+      "id": "detection",
+      "title": "目标检测",
+      "skills": [
+        "cellsight-detection-yolo",
+        "cellsight-detection-rtdetr",
+        "cellsight-detection-fasterrcnn",
+        "cellsight-detection-retinanet",
+        "cellsight-detection-fcos",
+        "cellsight-detection-ssdlite",
+        "cellsight-detection-rf-detr",
+        "cellsight-detection-deimv2",
+        "cellsight-detection-d-fine",
+        "cellsight-detection-grounding-dino",
+        "cellsight-detection-threshold-boxes"
+      ]
+    },
+    {
+      "id": "segmentation",
+      "title": "图像分割",
+      "skills": [
+        "cellsight-segmentation-threshold-cc",
+        "cellsight-segmentation-watershed",
+        "cellsight-segmentation-cellpose-sam",
+        "cellsight-segmentation-cellpose-dino",
+        "cellsight-segmentation-stardist",
+        "cellsight-segmentation-sam",
+        "cellsight-segmentation-sam2",
+        "cellsight-segmentation-sam3",
+        "cellsight-segmentation-yolo-seg",
+        "cellsight-segmentation-maskrcnn",
+        "cellsight-segmentation-unet",
+        "cellsight-segmentation-nnunet",
+        "cellsight-segmentation-segformer"
+      ]
+    },
+    {
+      "id": "classification",
+      "title": "图像分类",
+      "skills": [
+        "cellsight-classification-resnet",
+        "cellsight-classification-efficientnet",
+        "cellsight-classification-mobilenet",
+        "cellsight-classification-convnext",
+        "cellsight-classification-vit",
+        "cellsight-classification-swin",
+        "cellsight-classification-dinov3-linear"
+      ]
+    },
+    {
+      "id": "tracking",
+      "title": "目标追踪",
+      "skills": [
+        "cellsight-tracking-iou-tracker",
+        "cellsight-tracking-bytetrack",
+        "cellsight-tracking-deepsort",
+        "cellsight-tracking-trackmate"
+      ]
+    },
+    {
+      "id": "processing",
+      "title": "图像处理",
+      "skills": [
+        "cellsight-processing-identity",
+        "cellsight-processing-percentile-normalize",
+        "cellsight-processing-gaussian",
+        "cellsight-processing-median-filter",
+        "cellsight-processing-clahe",
+        "cellsight-processing-morph-opening",
+        "cellsight-processing-morph-closing",
+        "cellsight-processing-crop",
+        "cellsight-processing-flatfield",
+        "cellsight-processing-registration"
+      ]
+    },
+    {
+      "id": "restoration",
+      "title": "图像复原",
+      "skills": [
+        "cellsight-restoration-median-denoise",
+        "cellsight-restoration-nlmeans",
+        "cellsight-restoration-richardson-lucy",
+        "cellsight-restoration-care",
+        "cellsight-restoration-noise2void",
+        "cellsight-restoration-restormer"
+      ]
+    },
+    {
+      "id": "vision-language",
+      "title": "视觉语言与特征",
+      "skills": [
+        "cellsight-vision-language-clip",
+        "cellsight-vision-language-biomedclip",
+        "cellsight-vision-language-siglip",
+        "cellsight-vision-language-dinov3",
+        "cellsight-vision-language-vlm"
+      ]
+    },
+    {
+      "id": "quantification",
+      "title": "科学定量",
+      "skills": [
+        "cellsight-quantification-morphology",
+        "cellsight-quantification-fluorescence",
+        "cellsight-quantification-regionprops",
+        "cellsight-quantification-spatial-statistics"
+      ]
+    },
+    {
+      "id": "anomaly",
+      "title": "异常与缺陷检测",
+      "skills": [
+        "cellsight-anomaly-patchcore",
+        "cellsight-anomaly-padim",
+        "cellsight-anomaly-efficientad"
+      ]
+    },
+    {
+      "id": "pose",
+      "title": "关键点与姿态",
+      "skills": [
+        "cellsight-pose-yolo-pose",
+        "cellsight-pose-mmpose",
+        "cellsight-pose-deeplabcut"
+      ]
+    },
+    {
+      "id": "ocr",
+      "title": "图像文字识别",
+      "skills": [
+        "cellsight-ocr-paddleocr",
+        "cellsight-ocr-tesseract",
+        "cellsight-ocr-easyocr"
+      ]
+    },
+    {
+      "id": "depth",
+      "title": "深度估计",
+      "skills": [
+        "cellsight-depth-depth-anything-v2",
+        "cellsight-depth-midas"
+      ]
+    }
+  ]
+}
